@@ -1,0 +1,13 @@
+{
+  "editor.fontSize": 16,
+  "debug.console.fontSize": 15,
+  "editor.wordWrap": "on",
+  "prettier.singleQuote": true,
+  "window.zoomLevel": 1,
+  "prettier.jsxSingleQuote": true,
+  "prettier.semi": false,
+  "javascript.format.semicolons": "remove",
+  "editor.formatOnSave": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "vsicons.dontShowNewVersionMessage": true
+}
