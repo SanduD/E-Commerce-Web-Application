@@ -5,7 +5,7 @@ import {Link, useParams, useLocation, useNavigate} from 'react-router-dom'
 import {Row, Col, ListGroup, Image, Form, Button, Card} from 'react-bootstrap'
 import {addToCart, removeFromCart} from '../actions/cartActions'
 
-const CartScreen = ({history}) => {
+const CartScreen = () => {
   const match = useParams()
   const navigate = useNavigate()
 
@@ -13,6 +13,7 @@ const CartScreen = ({history}) => {
 
   const location = useLocation()
   const qty = location.search ? Number(location.search.split('=')[1]) : 1
+  console.log(location)
 
   const dispatch = useDispatch()
 
@@ -31,8 +32,7 @@ const CartScreen = ({history}) => {
   }
 
   const checkoutHandler = () => {
-    console.log('checkout')
-    navigate('/login?redirect=shipping')
+    navigate('/login', {state: {redirect: '/shipping'}})
   }
 
   return (
