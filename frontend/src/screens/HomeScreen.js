@@ -4,22 +4,27 @@ import {Row, Col} from 'react-bootstrap'
 import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-
+import ProductCarousel from '../components/ProductCarousel'
 import {listProducts} from '../actions/productActions'
+import {useParams} from 'react-router-dom'
 
 const HomeScreen = () => {
+  const match = useParams()
+  const keyword = match.keyword
+
   const dispatch = useDispatch()
 
   const productList = useSelector((state) => state.productList)
   const {loading, error, products} = productList
 
   useEffect(() => {
-    dispatch(listProducts())
-  }, [dispatch])
+    dispatch(listProducts(keyword))
+  }, [dispatch, keyword])
 
   return (
     <>
-      <h1>Cele mai noi produse</h1>
+      {!keyword && <ProductCarousel />}
+      <h1>Cele cautate produse</h1>
       {loading ? (
         <Loader />
       ) : error ? (

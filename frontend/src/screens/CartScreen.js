@@ -13,7 +13,7 @@ const CartScreen = () => {
 
   const location = useLocation()
   const qty = location.search ? Number(location.search.split('=')[1]) : 1
-  console.log(location)
+  
 
   const dispatch = useDispatch()
 

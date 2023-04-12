@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {Form, Button, Row, Col} from 'react-bootstrap'
+import {Form, Button, Row, Col, Table} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -134,7 +134,24 @@ const ProfileScreen = () => {
         </Form>
       </Col>
 
-      <Col md={8}>Comenzi</Col>
+      <Col md={8}>
+        <h2 className='text-center'>Istoric comenzi</h2>
+        <Table>
+          <Row className='text-center'>
+            <Col md={2}>Data</Col>
+            <Col md={6}>Produse</Col>
+            <Col md={2}>Pret Total</Col>
+            <Col md={2}>Status</Col>
+          </Row>
+
+          <Row className='text-center'>
+            <Col md={2}>10/04/2023 15:02:30</Col>
+            <Col md={6}>Iphone 11 pro</Col>
+            <Col md={2}>2499 RON</Col>
+            <Col md={2}>Plata acceptata</Col>
+          </Row>
+        </Table>
+      </Col>
     </Row>
   )
 }
