@@ -1,4 +1,5 @@
 <h1 style="text-align: center;">DMShop- Platforma de e-commerce</h1>
+<p>Pentru a testa aplicatia poti accesa link-ul acesta: <a href="https://dmshop.herokuapp.com/">Click here</a>
 <h3>Descriere</h3>
 <p>DMShop este o platforma de e-commerce care permite utilizatorilor sa navigheze prin produsele din magazin, sa adauge produse in cosul de cumparaturi si sa finalizeze comanda.</p>
 <h3>Tehnologii folosite</h3>
