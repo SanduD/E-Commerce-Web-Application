@@ -1,6 +1,6 @@
 <h1 style="text-align: center;">DMShop- Platforma de e-commerce</h1>
-<p>Descarcati aplicatia, introduceti folderul in VsCode si executati comenzile de mai jos:</p>
-<code>npm install && npm run dev</code>
+<p>Descarcati aplicatia, introduceti folderul in VsCode si executati comanda de mai jos:</p>
+<code>npm run dev</code>
 <h3>Descriere</h3>
 <p>DMShop este o platforma de e-commerce care permite utilizatorilor sa navigheze prin produsele din magazin, sa adauge produse in cosul de cumparaturi si sa finalizeze comanda.</p>
 <h3>Tehnologii folosite</h3>
