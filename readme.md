@@ -1,5 +1,5 @@
 <h1 style="text-align: center;">DMShop- Platforma de e-commerce</h1>
-<p>Pentru a testa aplicatia poti accesa link-ul acesta: <a href="https://dmshop.herokuapp.com/">Click here</a>
+<code>npm install && npm run dev</code>
 <h3>Descriere</h3>
 <p>DMShop este o platforma de e-commerce care permite utilizatorilor sa navigheze prin produsele din magazin, sa adauge produse in cosul de cumparaturi si sa finalizeze comanda.</p>
 <h3>Tehnologii folosite</h3>
@@ -26,6 +26,7 @@
 <p><b>App.js:</b> Fisierul principal al aplicatiei React, care definește rutarea si navigarea intre diferitele componente ale aplicatiei.</p>
 
 Backend:
+
 <p>Aplicatia web este impartita in mai multe parti esentiale, care includ:</p>
 
 <p><b>Controllers:</b> Aceste fisiere gestioneaza logica si datele aplicatiei.</p>
