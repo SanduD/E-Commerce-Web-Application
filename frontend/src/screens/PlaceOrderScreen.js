@@ -5,21 +5,22 @@ import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 import {createOrder} from '../actions/orderActions'
+import {ORDER_CREATE_RESET} from '../constants/orderConstants'
+import {USER_DETAILS_RESET} from '../constants/userConstants'
 
 const PlaceOrderScreen = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const cart = useSelector((state) => state.cart)
 
-  const navigate = useNavigate()
-
-  if (!cart.shippingAddress.address) {
-    navigate('/shipping')
-  } else if (!cart.paymentMethod) {
-    navigate('/payment')
-  }
-
-  // Calculate prices
+  useEffect(() => {
+    if (!cart.shippingAddress.address) {
+      navigate('/shipping')
+    } else if (!cart.paymentMethod) {
+      navigate('/payment')
+    }
+  }, [cart, navigate])
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2)
   }
@@ -27,21 +28,13 @@ const PlaceOrderScreen = () => {
   const itemsPrice = addDecimals(
     cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
   )
-  const shippingPrice = addDecimals(itemsPrice > 100 ? 0 : 6)
-  const taxPrice = addDecimals(Number((0.01 * itemsPrice).toFixed(2)))
+  const shippingPrice = addDecimals(itemsPrice > 100 ? 0 : 100)
+  const taxPrice = addDecimals(Number((0.15 * itemsPrice).toFixed(2)))
   const totalPrice = (
     Number(itemsPrice) +
     Number(shippingPrice) +
     Number(taxPrice)
   ).toFixed(2)
-
-  const updatedCart = {
-    ...cart,
-    itemsPrice,
-    shippingPrice,
-    taxPrice,
-    totalPrice,
-  }
 
   const orderCreate = useSelector((state) => state.orderCreate)
   const {order, success, error} = orderCreate
@@ -49,22 +42,29 @@ const PlaceOrderScreen = () => {
   useEffect(() => {
     if (success) {
       navigate(`/order/${order._id}`)
+      dispatch({type: USER_DETAILS_RESET})
+      dispatch({type: ORDER_CREATE_RESET})
     }
-  }, [navigate, success, order])
+    // eslint-disable-next-line
+  }, [navigate, success])
 
   const placeOrderHandler = () => {
-    console.log('order placed')
-    dispatch(
-      createOrder({
-        orderItems: updatedCart.cartItems,
-        shippingAddress: updatedCart.shippingAddress,
-        paymentMethod: updatedCart.paymentMethod,
-        itemsPrice: updatedCart.itemsPrice,
-        shippingPrice: updatedCart.shippingPrice,
-        taxPrice: updatedCart.taxPrice,
-        totalPrice: updatedCart.totalPrice,
-      })
-    )
+    if (cart) {
+      //console.log(cart)
+      dispatch(
+        createOrder({
+          orderItems: cart.cartItems,
+          shippingAddress: cart.shippingAddress,
+          paymentMethod: cart.paymentMethod,
+          itemsPrice: itemsPrice,
+          shippingPrice: shippingPrice,
+          taxPrice: taxPrice,
+          totalPrice: totalPrice,
+        })
+      )
+    } else {
+      console.log('Cart is undefined')
+    }
   }
 
   return (
@@ -74,9 +74,9 @@ const PlaceOrderScreen = () => {
         <Col md={8}>
           <ListGroup variant='flush'>
             <ListGroup.Item>
-              <h2>Adresa de livrare</h2>
+              <h2>Shipping</h2>
               <p>
-                <strong>Adresa: </strong>
+                <strong>Address:</strong>
                 {cart.shippingAddress.address}, {cart.shippingAddress.city}{' '}
                 {cart.shippingAddress.postalCode},{' '}
                 {cart.shippingAddress.country}
@@ -84,15 +84,15 @@ const PlaceOrderScreen = () => {
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Metoda de plata</h2>
-              <strong>Metoda: </strong>
+              <h2>Payment Method</h2>
+              <strong>Method: </strong>
               {cart.paymentMethod}
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Produse comandate</h2>
+              <h2>Order Items</h2>
               {cart.cartItems.length === 0 ? (
-                <Message>Cosul tau este gol</Message>
+                <Message>Your cart is empty</Message>
               ) : (
                 <ListGroup variant='flush'>
                   {cart.cartItems.map((item, index) => (
@@ -112,8 +112,7 @@ const PlaceOrderScreen = () => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x {item.price * 4} = RON{' '}
-                          {item.qty * item.price * 4}
+                          {item.qty} x ${item.price} = ${item.qty * item.price}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -127,30 +126,30 @@ const PlaceOrderScreen = () => {
           <Card>
             <ListGroup variant='flush'>
               <ListGroup.Item>
-                <h2>Rezumat comanda</h2>
+                <h2>Order Summary</h2>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Produse</Col>
-                  <Col>{cart.itemsPrice * 4} RON</Col>
+                  <Col>Items</Col>
+                  <Col>${itemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Taxa livrare</Col>
-                  <Col>{cart.shippingPrice * 4} RON</Col>
+                  <Col>Shipping</Col>
+                  <Col>${shippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Alte taxe</Col>
-                  <Col>{cart.taxPrice * 4} RON</Col>
+                  <Col>Tax</Col>
+                  <Col>${taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>{cart.totalPrice * 4} RON</Col>
+                  <Col>${totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
@@ -163,7 +162,7 @@ const PlaceOrderScreen = () => {
                   disabled={cart.cartItems === 0}
                   onClick={placeOrderHandler}
                 >
-                  Plaseaza comanda
+                  Place Order
                 </Button>
               </ListGroup.Item>
             </ListGroup>

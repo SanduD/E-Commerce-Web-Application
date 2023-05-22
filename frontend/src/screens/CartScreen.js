@@ -13,7 +13,6 @@ const CartScreen = () => {
 
   const location = useLocation()
   const qty = location.search ? Number(location.search.split('=')[1]) : 1
-  
 
   const dispatch = useDispatch()
 
@@ -38,12 +37,11 @@ const CartScreen = () => {
   return (
     <Row>
       <Col md={8}>
-        <h1>Cos de cumparaturi</h1>
+        <h1>Shopping cart</h1>
         {cartItems.length === 0 ? (
           <Message>
             {' '}
-            Cosul de cumparaturi este gol!{' '}
-            <Link to='/'>Continua cumparaturile</Link>
+            Shopping cart is empty! <Link to='/'>Continue shopping</Link>
           </Message>
         ) : (
           <ListGroup variant='flush'>
@@ -63,7 +61,7 @@ const CartScreen = () => {
                     </Link>
                   </Col>
 
-                  <Col md={2}>{item.price * 4} RON</Col>
+                  <Col md={2}>{item.price} $</Col>
 
                   <Col md={2}>
                     <Form.Control
@@ -111,12 +109,12 @@ const CartScreen = () => {
                   (accumulator, item) => accumulator + item.qty,
                   0
                 )}
-                ) articole
+                ) articles
               </h2>
               {cartItems
-                .reduce((acc, item) => acc + item.qty * item.price * 4, 0)
+                .reduce((acc, item) => acc + item.qty * item.price, 0)
                 .toFixed(2)}
-              RON
+              $
             </ListGroup.Item>
 
             <ListGroup.Item>
@@ -126,7 +124,7 @@ const CartScreen = () => {
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >
-                Finalizeaza cumparaturile
+                Checkout
               </Button>
             </ListGroup.Item>
           </ListGroup>

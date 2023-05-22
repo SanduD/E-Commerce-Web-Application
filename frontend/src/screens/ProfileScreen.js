@@ -1,21 +1,23 @@
 import React, {useState, useEffect} from 'react'
-import {useNavigate} from 'react-router-dom'
-import {Form, Button, Row, Col, Table} from 'react-bootstrap'
+import {Table, Form, Button, Row, Col} from 'react-bootstrap'
+import {LinkContainer} from 'react-router-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import {getUserDetails, updateUserProfile} from '../actions/userActions'
-import {Eye, EyeSlash} from 'react-bootstrap-icons'
+import {listMyOrders} from '../actions/orderActions'
+import {USER_UPDATE_PROFILE_RESET} from '../constants/userConstants'
+import {useLocation, useNavigate, useParams} from 'react-router-dom'
 
 const ProfileScreen = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
+
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState(null)
-
-  const [showPassword_1, setShowPassword_1] = useState(false)
-  const [showPassword_2, setShowPassword_2] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -28,129 +30,142 @@ const ProfileScreen = () => {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
   const {success} = userUpdateProfile
 
-  //const location = useLocation()
-  const navigate = useNavigate()
+  const orderListMy = useSelector((state) => state.orderListMy)
+  const {loading: loadingOrders, error: errorOrders, orders} = orderListMy
 
   useEffect(() => {
     if (!userInfo) {
       navigate('/login')
     } else {
-      if (!user.name) {
+      if (!user || !user.name || success) {
+        dispatch({type: USER_UPDATE_PROFILE_RESET})
         dispatch(getUserDetails('profile'))
+        dispatch(listMyOrders())
       } else {
         setName(user.name)
         setEmail(user.email)
       }
     }
-  }, [navigate, userInfo, dispatch, user])
+  }, [dispatch, navigate, userInfo, user, success])
 
   const submitHandler = (e) => {
     e.preventDefault()
     if (password !== confirmPassword) {
-      setMessage('Parolele nu coincid!')
+      setMessage('Passwords do not match')
     } else {
       dispatch(updateUserProfile({id: user._id, name, email, password}))
-      setMessage(null)
     }
-  }
-
-  const togglePasswordVisibility_1 = () => {
-    setShowPassword_1(!showPassword_1)
-  }
-  const togglePasswordVisibility_2 = () => {
-    setShowPassword_2(!showPassword_2)
   }
 
   return (
     <Row>
-      <Col md={4}>
-        <h2 className='text-center'>Profil</h2>
+      <Col md={3}>
+        <h2>User Profile</h2>
         {message && <Message variant='danger'>{message}</Message>}
-        {error && <Message variant='danger'>{error}</Message>}
-        {success && <Message variant='success'>Profil actualizat!</Message>}
-        {loading && <Loader />}
-        <Form onSubmit={submitHandler}>
-          <Form.Group controlId='name'>
-            <Form.Label>Nume si Prenume</Form.Label>
-            <Form.Control
-              type='name'
-              placeholder='Introduceti numele si prenumele'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId='email'>
-            <Form.Label>Adresa de email</Form.Label>
-            <Form.Control
-              type='email'
-              placeholder='Introduceti adresa de email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId='password'>
-            <Form.Label>Parola</Form.Label>
-            <div className='d-flex'>
+        {}
+        {success && <Message variant='success'>Profile Updated</Message>}
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant='danger'>{error}</Message>
+        ) : (
+          <Form onSubmit={submitHandler}>
+            <Form.Group controlId='name'>
+              <Form.Label>Name</Form.Label>
               <Form.Control
-                type={showPassword_1 ? 'text' : 'password'}
-                placeholder='Parola Noua'
+                type='name'
+                placeholder='Enter name'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId='email'>
+              <Form.Label>Email Address</Form.Label>
+              <Form.Control
+                type='email'
+                placeholder='Enter email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId='password'>
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type='password'
+                placeholder='Enter password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               ></Form.Control>
-              <Button
-                variant='dark'
-                onClick={togglePasswordVisibility_1}
-                className='ml-2'
-              >
-                {showPassword_1 ? <EyeSlash /> : <Eye />}
-              </Button>
-            </div>
-          </Form.Group>
+            </Form.Group>
 
-          <Form.Group controlId='confirmPassword'>
-            <Form.Label>Confirma Parola</Form.Label>
-            <div className='d-flex'>
+            <Form.Group controlId='confirmPassword'>
+              <Form.Label>Confirm Password</Form.Label>
               <Form.Control
-                type={showPassword_2 ? 'text' : 'password'}
-                placeholder='Confirma parola'
+                type='password'
+                placeholder='Confirm password'
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               ></Form.Control>
-              <Button
-                variant='dark'
-                onClick={togglePasswordVisibility_2}
-                className='ml-2'
-              >
-                {showPassword_2 ? <EyeSlash /> : <Eye />}
-              </Button>
-            </div>
-          </Form.Group>
+            </Form.Group>
 
-          <Button type='submit' variant='primary' className='mt-3'>
-            Update
-          </Button>
-        </Form>
+            <Button type='submit' variant='primary'>
+              Update
+            </Button>
+          </Form>
+        )}
       </Col>
-
-      <Col md={8}>
-        <h2 className='text-center'>Istoric comenzi</h2>
-        <Table>
-          <Row className='text-center'>
-            <Col md={2}>Data</Col>
-            <Col md={6}>Produse</Col>
-            <Col md={2}>Pret Total</Col>
-            <Col md={2}>Status</Col>
-          </Row>
-
-          <Row className='text-center'>
-            <Col md={2}>10/04/2023 15:02:30</Col>
-            <Col md={6}>Iphone 11 pro</Col>
-            <Col md={2}>2499 RON</Col>
-            <Col md={2}>Plata acceptata</Col>
-          </Row>
-        </Table>
+      <Col md={9}>
+        <h2>My Orders</h2>
+        {loadingOrders ? (
+          <Loader />
+        ) : errorOrders ? (
+          <Message variant='danger'>{errorOrders}</Message>
+        ) : (
+          <Table striped bordered hover responsive className='table-sm'>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>DATE</th>
+                <th>TOTAL</th>
+                <th>PAID</th>
+                <th>DELIVERED</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td>{order._id}</td>
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>{order.totalPrice}</td>
+                  <td>
+                    {order.isPaid ? (
+                      order.paidAt.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-times' style={{color: 'red'}}></i>
+                    )}
+                  </td>
+                  <td>
+                    {order.isDelivered ? (
+                      order.deliveredAt.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-times' style={{color: 'red'}}></i>
+                    )}
+                  </td>
+                  <td>
+                    <LinkContainer to={`/order/${order._id}`}>
+                      <Button className='btn-sm' variant='light'>
+                        Details
+                      </Button>
+                    </LinkContainer>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Col>
     </Row>
   )

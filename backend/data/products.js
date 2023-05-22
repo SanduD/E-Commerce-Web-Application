@@ -71,6 +71,127 @@ const products = [
     rating: 4,
     numReviews: 12,
   },
+
+  {
+    name: 'iPhone 14',
+    image: '/images/iphone14.jpg',
+    description:
+      'Latest generation of iPhone with advanced A15 chip, improved cameras, and superior display',
+    brand: 'Apple',
+    category: 'Electronics',
+    price: 999.99,
+    countInStock: 20,
+    rating: 4.8,
+    numReviews: 10,
+  },
+  {
+    name: 'iPhone 14 Pro Max',
+    image: '/images/iphone14promax.jpg',
+    description:
+      'Premium version of the latest iPhone with advanced camera system, bigger display, and larger battery',
+    brand: 'Apple',
+    category: 'Electronics',
+    price: 1099.99,
+    countInStock: 15,
+    rating: 4.9,
+    numReviews: 25,
+  },
+  {
+    name: 'Xbox Series X',
+    image: '/images/xbox.jpg',
+    description:
+      'Latest generation of Xbox console with high-speed SSD, 4K gaming, and backward compatibility',
+    brand: 'Microsoft',
+    category: 'Electronics',
+    price: 499.99,
+    countInStock: 5,
+    rating: 4.7,
+    numReviews: 18,
+  },
+  {
+    name: 'Samsung Washing Machine',
+    image: '/images/samsungwashingmachine.jpg',
+    description:
+      'Efficient and durable washing machine with smart features and energy saving technology',
+    brand: 'Samsung',
+    category: 'Home Appliances',
+    price: 349.99,
+    countInStock: 7,
+    rating: 4.4,
+    numReviews: 15,
+  },
+  {
+    name: 'MacBook Pro M1',
+    image: '/images/macbookpro.jpg',
+    description:
+      'High-performance laptop with Apple-designed M1 chip, Retina display, and long battery life',
+    brand: 'Apple',
+    category: 'Electronics',
+    price: 1299.99,
+    countInStock: 10,
+    rating: 4.8,
+    numReviews: 30,
+  },
+  {
+    name: 'Sony PlayStation 5',
+    image: '/images/ps5.jpg',
+    description:
+      'Next-generation gaming console with ultra-high-speed SSD, 3D audio and haptic feedback support',
+    brand: 'Sony',
+    category: 'Electronics',
+    price: 499.99,
+    countInStock: 0,
+    rating: 4.9,
+    numReviews: 35,
+  },
+  {
+    name: 'Samsung Galaxy S22 Ultra',
+    image: '/images/galaxys22ultra.jpg',
+    description:
+      'High-end Android smartphone with dynamic AMOLED display, professional-grade camera and S Pen support',
+    brand: 'Samsung',
+    category: 'Electronics',
+    price: 1199.99,
+    countInStock: 12,
+    rating: 4.8,
+    numReviews: 28,
+  },
+  {
+    name: 'Dell XPS 13',
+    image: '/images/dellxps13.jpg',
+    description:
+      'Portable and powerful laptop with InfinityEdge display, 11th Gen Intel Core processors and excellent battery life',
+    brand: 'Dell',
+    category: 'Electronics',
+    price: 999.99,
+    countInStock: 14,
+    rating: 4.6,
+    numReviews: 22,
+  },
+  {
+    name: 'Bose QuietComfort 35 II',
+    image: '/images/boseqc35.jpg',
+    description:
+      'Premium wireless noise-cancelling headphones with Alexa voice control and balanced audio performance',
+    brand: 'Bose',
+    category: 'Electronics',
+    price: 299.99,
+    countInStock: 10,
+    rating: 4.7,
+    numReviews: 18,
+  },
+  {
+    name: 'Google Nest Hub Max',
+    image: '/images/googlenesthub.jpg',
+    description:
+      'Smart home display with Google Assistant, video calling, and digital photo frame functionality',
+    brand: 'Google',
+    category: 'Home Appliances',
+    price: 229.99,
+    countInStock: 8,
+    rating: 4.5,
+    numReviews: 14,
+  },
 ]
 
 export default products
